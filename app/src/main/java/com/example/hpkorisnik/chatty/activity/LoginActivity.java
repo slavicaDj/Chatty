@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        Picasso.with(this.getApplicationContext()).load(R.drawable.chatty2).into(imageView);
+        Picasso.with(this.getApplicationContext()).load(R.drawable.logo).into(imageView);
 
         buttonLogin = (Button)findViewById(R.id.buttonLogin);
         buttonRegister = (Button)findViewById(R.id.buttonRegister);

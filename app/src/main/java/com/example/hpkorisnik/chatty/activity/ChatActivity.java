@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.hpkorisnik.chatty.adapter.CustomListAdapterChat;
+import com.example.hpkorisnik.chatty.adapter.MessageAdapter;
 import com.example.hpkorisnik.chatty.object.Message;
 import com.example.hpkorisnik.chatty.R;
 import com.example.hpkorisnik.chatty.object.User;
@@ -134,9 +134,8 @@ public class ChatActivity extends AppCompatActivity {
                                             message.setToName(User.name);
                                         }
                                     }
-                                    CustomListAdapterChat adapter = new CustomListAdapterChat(ChatActivity.this, ChatActivity.this.getApplicationContext(), messages);
-                                    listView.setAdapter(adapter);
-                                }
+                                    MessageAdapter adapter = new MessageAdapter(ChatActivity.this, R.layout.item_chat_left, messages);
+                                    listView.setAdapter(adapter);                                }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {

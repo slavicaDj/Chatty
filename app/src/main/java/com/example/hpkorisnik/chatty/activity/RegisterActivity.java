@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        Picasso.with(this.getApplicationContext()).load(R.drawable.chatty2).into(imageView);
+        Picasso.with(this.getApplicationContext()).load(R.drawable.logo).into(imageView);
 
         editTextName = (EditText)findViewById(R.id.editTextName);
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
