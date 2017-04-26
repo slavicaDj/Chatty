@@ -58,8 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // // TODO: 18-Apr-17  Set progress dialog until we get result of login
 
+/*                //set progress dialog
+                final ProgressDialog dialog = new ProgressDialog(LoginActivity.this.getApplicationContext());
+                dialog.setMessage("loading");
+                dialog.show();*/
 
                 final String email = editTextEmail.getText().toString();
                 final String password = editTextPassword.getText().toString();
@@ -67,21 +70,48 @@ public class LoginActivity extends AppCompatActivity {
                 //check credentials
                 final FirebaseAuth auth = FirebaseAuth.getInstance();
                 task = auth.signInWithEmailAndPassword(email, password);
-                LoginListener loginListener = new LoginListener(email);
-                task.addOnCompleteListener(loginListener);
+                task.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //set email for main user
+                        User.email = email;
 
-                //Toast.makeText(LoginActivity.this, "You are logged in.", Toast.LENGTH_SHORT).show();
+                        //iterate through all users to get name of user with entered email
+                        DatabaseReference rootLogin = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
+                        rootLogin.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot childNode : dataSnapshot.getChildren()) {
+                                    if (childNode.child("email").getValue().equals(email)) {
+                                        User.name = (String) childNode.child("name").getValue();
+                                        break;
+                                    }
+                                }
+                                User.id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                if (User.id != null) {
+                                    //dispose dialog show ok
+                                    Toast.makeText(LoginActivity.this, "Your are logged in.", Toast.LENGTH_SHORT).show();
+                                    Log.i("userId", User.id);
+                                    Intent intent = new Intent(LoginActivity.this, ConversationsActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else {
+                                    //dispose dialog show not ok
+                                    Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                User.id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                if (User.id != null) {
-                    Log.i("userId",User.id);
-                    Intent intent = new Intent(LoginActivity.this, ConversationsActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                            }
+
+                            });
+                    }
+                });
+            }//onClick
+        });//setOnClickListener
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,39 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 LoginActivity.this.startActivity(intent);
             }
         });
-    }
 
-    public static class LoginListener implements OnCompleteListener<com.google.firebase.auth.AuthResult> {
+    }//onCreate
 
-        private String email;
-
-        public LoginListener(String email) {
-            this.email = email;
-
-        }
-        public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
-                //progressDialog.dismiss();
-
-                User.email = email;
-
-                //iterate through all users to get name of user with entered email
-                DatabaseReference rootLogin = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
-                rootLogin.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot childNode : dataSnapshot.getChildren() ){
-                            if (childNode.child("email").getValue().equals(email)) {
-                                User.name = (String)childNode.child("name").getValue();
-                                break;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-        }
-    }
-}
+}//LoginActivity

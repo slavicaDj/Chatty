@@ -41,6 +41,7 @@ public class ConversationsActivity extends AppCompatActivity {
         messages = new ArrayList<>();
 
         textViewName = (TextView) findViewById(R.id.textViewName);
+        textViewName.setText(User.name);
 
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         buttonNewMessage = (Button) findViewById(R.id.buttonNewMessage);
@@ -127,7 +128,6 @@ public class ConversationsActivity extends AppCompatActivity {
                                     }
                                     CustomListAdapterConversations adapter = new CustomListAdapterConversations(ConversationsActivity.this,ConversationsActivity.this.getApplicationContext(),messages);
                                     listView.setAdapter(adapter);
-                                    textViewName.setText(User.name);
                                 }
 
                                 @Override

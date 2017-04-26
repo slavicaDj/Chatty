@@ -68,43 +68,45 @@ public class RegisterActivity extends AppCompatActivity {
 
                             //transfer user to main activity in order to chat with other users
                             Task<AuthResult> taskLogin = auth.signInWithEmailAndPassword(email, password);
-                            LoginActivity.LoginListener loginListener = new LoginActivity.LoginListener(email);
-                            taskLogin.addOnCompleteListener(loginListener);
-                            User.id = auth.getCurrentUser().getUid();
-                            if (User.id != null) {
-                                //notify user about successful registration
-                                Toast.makeText(RegisterActivity.this, "You registered successfully.", Toast.LENGTH_SHORT).show();
+                            taskLogin.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    //get userId after login completion
+                                    User.id = auth.getCurrentUser().getUid();
 
-                                //switch to lower level of nodes
-                                root = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
+                                    if (User.id != null) {
+                                        //notify user about successful registration
+                                        Toast.makeText(RegisterActivity.this, "You registered successfully.", Toast.LENGTH_SHORT).show();
 
-                                //initialize user; he will be accessible from every class
-                                String id = User.id;
-                                User.name = name;
-                                User.email = email;
+                                        //switch to lower level of nodes
+                                        root = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
 
-                                //now root needs to become users branch, so I can append values
-                                root = root.child(id);
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("email",email);
-                                map.put("name",name);
-                                root.updateChildren(map);
+                                        //initialize user; he will be accessible from every class
+                                        String id = User.id;
+                                        User.name = name;
+                                        User.email = email;
 
-                                Intent intent = new Intent(RegisterActivity.this, ConversationsActivity.class);
-                                startActivity(intent);
-                                finish();
+                                        //now root needs to become users branch, so I can append values
+                                        root = root.child(id);
+                                        Map<String,Object> map = new HashMap<>();
+                                        map.put("email",email);
+                                        map.put("name",name);
+                                        root.updateChildren(map);
 
+                                        Intent intent = new Intent(RegisterActivity.this, ConversationsActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(RegisterActivity.this, "Your registration failed.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                                else {
-                                    Toast.makeText(RegisterActivity.this, "Your registration failed.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
+                            });
+                         }
                     }
                 });
-            }
-        });
+            }//onClick
+        });//setOnClickListener
 
     }
-
 }
