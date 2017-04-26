@@ -1,6 +1,7 @@
 package com.example.hpkorisnik.chatty.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private Activity activity;
     private List<Message> messages;
+    int resource;
 
     public MessageAdapter(Activity context, int resource, List<Message> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.messages = objects;
+        this.resource = resource;
     }
 
     @Override
@@ -31,28 +34,38 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         ViewHolder holder;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-        int layoutResource = 0; // determined by view type
-        Message chatMessage = getItem(position);
-        int viewType = getItemViewType(position);
+        resource = 0; // determined by view type
 
+        Message chatMessage = messages.get(position);
+
+        //if someone sent message to me, set left bubble
         if (chatMessage.getToldId().equals(User.id)) {
-            layoutResource = R.layout.item_chat_left;
-        } else {
-            layoutResource = R.layout.item_chat_right;
+            Log.i("userId",User.id);
+            Log.i("text",chatMessage.getText());
+            Log.i("toId:",chatMessage.getToldId());
+            Log.i("----","----------");
+            resource = R.layout.item_chat_left;
+        }
+        //if I sent message to someone, set right bubble
+        if (chatMessage.getFromId().equals(User.id)) {
+            Log.i("userId",User.id);
+            Log.i("text",chatMessage.getText());
+            Log.i("fromId:",chatMessage.getFromId());
+            Log.i("----","----------");
+            resource = R.layout.item_chat_right;
         }
 
-        if (convertView != null) {
-            holder = (ViewHolder) convertView.getTag();
-        } else {
-            convertView = inflater.inflate(layoutResource, parent, false);
+        //if (convertView != null) {
+            //holder = (ViewHolder) convertView.getTag();
+        //} else {
+            convertView = inflater.inflate(resource, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }
+        //}
 
         //set message content
         holder.msg.setText(chatMessage.getText());
         holder.time.setText(getTimeFromUnixTime(Long.valueOf(chatMessage.getTimestamp())));
-
 
         return convertView;
     }

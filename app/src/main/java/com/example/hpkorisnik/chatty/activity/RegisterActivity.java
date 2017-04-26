@@ -66,33 +66,40 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            //switch to lower level of nodes
-                            root = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
-                            String id = root.push().getKey();
-
-                            //initialize user; he will be accessible from every class
-                            User.name = name;
-                            User.email = email;
-                            User.id = id;
-                            root.child(id).setValue("");
-                            
-                            //now root needs to become users branch, so I can append values
-                            root = root.child(id);
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("email",email);
-                            map.put("name",name);
-                            root.updateChildren(map);
-                            
-                            //notify user about successful registration
-                            Toast.makeText(RegisterActivity.this, "You registered successfully.", Toast.LENGTH_SHORT).show();
-
                             //transfer user to main activity in order to chat with other users
-                            Intent intent = new Intent(RegisterActivity.this, ConversationsActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(RegisterActivity.this, "Your registration failed.", Toast.LENGTH_SHORT).show();
-                        }
+                            Task<AuthResult> taskLogin = auth.signInWithEmailAndPassword(email, password);
+                            LoginActivity.LoginListener loginListener = new LoginActivity.LoginListener(email);
+                            taskLogin.addOnCompleteListener(loginListener);
+                            User.id = auth.getCurrentUser().getUid();
+                            if (User.id != null) {
+                                //notify user about successful registration
+                                Toast.makeText(RegisterActivity.this, "You registered successfully.", Toast.LENGTH_SHORT).show();
+
+                                //switch to lower level of nodes
+                                root = FirebaseDatabase.getInstance().getReference().getRoot().child("users");
+
+                                //initialize user; he will be accessible from every class
+                                String id = User.id;
+                                User.name = name;
+                                User.email = email;
+
+                                //now root needs to become users branch, so I can append values
+                                root = root.child(id);
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("email",email);
+                                map.put("name",name);
+                                root.updateChildren(map);
+
+                                Intent intent = new Intent(RegisterActivity.this, ConversationsActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                                }
+                                else {
+                                    Toast.makeText(RegisterActivity.this, "Your registration failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
                     }
                 });
             }

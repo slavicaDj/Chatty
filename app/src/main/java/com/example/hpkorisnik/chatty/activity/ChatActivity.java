@@ -77,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
                 DatabaseReference rootUserMessagesFirstUser = rootUserMessages.child(User.id).child(chatWithId);
                 DatabaseReference rootUserMessagesSecondUser = rootUserMessages.child(chatWithId).child(User.id);
                 Map<String,Object> mapUserMessage = new HashMap<>();
-                mapUserMessage.put(id,1);
+                mapUserMessage.put(id,"1");
                 rootUserMessagesFirstUser.updateChildren(mapUserMessage);
                 rootUserMessagesSecondUser.updateChildren(mapUserMessage);
                 rootMessages.updateChildren(mapMessage);
@@ -114,7 +114,6 @@ public class ChatActivity extends AppCompatActivity {
                             message.setToldId(childNode.child("toId").getValue().toString());
                             message.setTimestamp(childNode.child("timestamp").getValue().toString());
                             message.setText(childNode.child("text").getValue().toString());
-                            Log.i("textOfMessage",message.getText());
 
                             //loop through all messages of main user to find names of other users that sent him message
                             //at this stage we have only ids
@@ -130,12 +129,13 @@ public class ChatActivity extends AppCompatActivity {
                                         }
                                         if (User.id.equals(message.getToldId())) {
                                             //fetch fromId
-                                            message.setFromName(dataSnapshot.child(message.getFromId()).child("name").getValue().toString());
                                             message.setToName(User.name);
+                                            message.setFromName(dataSnapshot.child(message.getFromId()).child("name").getValue().toString());
                                         }
                                     }
                                     MessageAdapter adapter = new MessageAdapter(ChatActivity.this, R.layout.item_chat_left, messages);
-                                    listView.setAdapter(adapter);                                }
+                                    listView.setAdapter(adapter);
+                                }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {

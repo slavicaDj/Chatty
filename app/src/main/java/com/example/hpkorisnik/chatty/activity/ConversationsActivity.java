@@ -46,29 +46,6 @@ public class ConversationsActivity extends AppCompatActivity {
         buttonNewMessage = (Button) findViewById(R.id.buttonNewMessage);
 
         listView = (ListView) findViewById(R.id.listView);
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ConversationsActivity.this, ChatActivity.class);
-
-                //fetch name and id of user that is chatting with this user
-                String name = null;
-                String userId = null;
-                if (messages.get(position).getFromName().equals(User.name)) {
-                    name = messages.get(position).getToName();
-                    userId =  messages.get(position).getToldId();
-                }
-                else {
-                    name = messages.get(position).getFromName();
-                    userId =  messages.get(position).getFromId();
-                }
-
-                //transfer fetched data to chat activity
-                intent.putExtra("name",name);
-                intent.putExtra("userId",userId);
-                startActivity(intent);
-            }
-        });*/
 
         root = FirebaseDatabase.getInstance().getReference().getRoot().child("user-messages");
         root.addValueEventListener(new ValueEventListener() {
@@ -120,8 +97,11 @@ public class ConversationsActivity extends AppCompatActivity {
                         for (Message message : messages) {
                             DataSnapshot childNode = dataSnapshot.child(message.getId());
                             message.setFromId(childNode.child("fromId").getValue().toString());
+                            Log.i("fromId",message.getFromId());
                             message.setToldId(childNode.child("toId").getValue().toString());
+                            Log.i("toId",message.getToldId());
                             message.setTimestamp(childNode.child("timestamp").getValue().toString());
+                            Log.i("timestamp",message.getTimestamp());
                             message.setText(childNode.child("text").getValue().toString());
                             Log.i("textOfMessage",message.getText());
 
@@ -145,7 +125,6 @@ public class ConversationsActivity extends AppCompatActivity {
                                         }
                                         Log.i("message:",message.toString());
                                     }
-                                    //ArrayAdapter<Message> adapter = new ArrayAdapter<>(ConversationsActivity.this, android.R.layout.simple_list_item_1, messages);
                                     CustomListAdapterConversations adapter = new CustomListAdapterConversations(ConversationsActivity.this,ConversationsActivity.this.getApplicationContext(),messages);
                                     listView.setAdapter(adapter);
                                     textViewName.setText(User.name);

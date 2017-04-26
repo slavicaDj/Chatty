@@ -1,27 +1,64 @@
 {
   "project_info": {
-    "project_number": "885448412680",
-    "firebase_url": "https://chatty-2f6f9.firebaseio.com",
-    "project_id": "chatty-2f6f9",
-    "storage_bucket": "chatty-2f6f9.appspot.com"
+    "project_number": "911954343880",
+    "firebase_url": "https://chat-application-efb5e.firebaseio.com",
+    "project_id": "chat-application-efb5e",
+    "storage_bucket": "chat-application-efb5e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:885448412680:android:feb7e95840727b85",
+        "mobilesdk_app_id": "1:911954343880:android:84cb588a25013cb5",
+        "android_client_info": {
+          "package_name": "com.example.user.firebasetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911954343880-26o5iobsguspb9dche2pki4dom1s1sbo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoJvgk_RRZabWlEeLoCqo3YjqL3foDoiA"
+        },
+        {
+          "current_key": "AIzaSyBgath9Bvs8VlBDX3bYgN7Qd32injY-two"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911954343880:android:feb7e95840727b85",
         "android_client_info": {
           "package_name": "com.example.hpkorisnik.chatty"
         }
       },
       "oauth_client": [
         {
-          "client_id": "885448412680-8htpribm99feq1a6ps4a5q6788t99ss9.apps.googleusercontent.com",
+          "client_id": "911954343880-26o5iobsguspb9dche2pki4dom1s1sbo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDbp_SPk67sKIRs5DxY1wgg4Yvl2ubBNsA"
+          "current_key": "AIzaSyBoJvgk_RRZabWlEeLoCqo3YjqL3foDoiA"
+        },
+        {
+          "current_key": "AIzaSyBgath9Bvs8VlBDX3bYgN7Qd32injY-two"
         }
       ],
       "services": {

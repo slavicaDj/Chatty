@@ -4,4 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#00118e</color>
     <color name="chatBackground">#dfdfdf</color>
+    <color name="teal">#92c9b1</color>
+    <color name="yellow">#ffc857</color>
+    <color name="pale">#e4fde1</color>
+    <color name="greyblue">#575366</color>
+    <color name="plum">#32292f</color>
+    <color name="darkgreen">#041b15</color>
+    <color name="middlegreen">#136f63</color>
 </resources>
